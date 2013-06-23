@@ -13,3 +13,5 @@ Runs across:
 Coming soon:
 - iOS
 - Android
+
+Head to http://www.bitrave.com/azure-mobile-services-for-unity-3d/ for more information.
