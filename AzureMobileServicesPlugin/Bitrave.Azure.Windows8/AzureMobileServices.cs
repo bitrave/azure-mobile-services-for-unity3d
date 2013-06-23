@@ -12,7 +12,7 @@ using Windows.ApplicationModel.Core;
 
 namespace Bitrave.Azure
 {
-    public class AzureMobileServices
+    public class AzureMobileServices : IAzureMobileServices
     {
         public AzureMobileServices() { }
         private MobileServiceClient _mobileClient;

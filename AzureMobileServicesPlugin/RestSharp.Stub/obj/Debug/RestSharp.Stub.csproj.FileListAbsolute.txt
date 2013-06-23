@@ -1,4 +1,0 @@
-C:\Projects\Game3\Plugins\RestSharp.Stub\bin\Debug\RestSharp.dll
-C:\Projects\Game3\Plugins\RestSharp.Stub\bin\Debug\RestSharp.pdb
-C:\Projects\Game3\Plugins\RestSharp.Stub\obj\Debug\RestSharp.dll
-C:\Projects\Game3\Plugins\RestSharp.Stub\obj\Debug\RestSharp.pdb

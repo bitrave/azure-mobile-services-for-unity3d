@@ -13,7 +13,7 @@ using UnityEngine;
 
 namespace Bitrave.Azure
 {
-    public class AzureMobileServices
+    public class AzureMobileServices : IAzureMobileServices
     {
         private string _azureEndPoint;
         private string _applicationKey;
@@ -98,6 +98,9 @@ namespace Bitrave.Azure
             var result = ms.Get();
             callback(result);
         }
+
+
+       
     }
 
 

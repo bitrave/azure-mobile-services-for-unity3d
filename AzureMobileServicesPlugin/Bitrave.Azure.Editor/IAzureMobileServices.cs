@@ -7,7 +7,7 @@ namespace Bitrave.Azure
     public interface IAzureMobileServices
     {
         bool Initialised();
-        void Initialise(string url, string token);
+        
         void Insert<T>(T item) where T : class;
         void Update<T>(T item) where T : class;
         void LoginAsync(AuthenticationProvider provider, Action<AzureResponse<MobileServiceUser>> callback);

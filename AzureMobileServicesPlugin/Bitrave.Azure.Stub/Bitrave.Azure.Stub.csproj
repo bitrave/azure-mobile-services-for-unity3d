@@ -45,7 +45,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>rem copy $(TargetDir)$(TargetFileName)  $(SolutionDir)Output\Plugins\WP8\</PostBuildEvent>
+    <PostBuildEvent>copy $(TargetDir)$(TargetFileName)  $(SolutionDir)Output\Plugins\WP8\</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -13,3 +13,7 @@
 /AzureMobileServicesPlugin/Bitrave.Azure.WindowsPhone8/obj
 /AzureMobileServicesPlugin/packages
 /AzureMobileServicesUnityProject
+/AzureMobileServicesPlugin/RestSharp.Stub/obj
+/AzureMobileServicesPlugin/RestSharp.Stub/bin
+/AzureMobileServicesPlugin/Bitrave.Azure.WindowsPhone8.TestApp/Bin
+/AzureMobileServicesPlugin/Bitrave.Azure.WindowsPhone8.TestApp/obj

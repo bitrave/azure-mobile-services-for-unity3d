@@ -28,7 +28,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;UNITY_EDITOR</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AzureMobileServices.cs" />
+    <Compile Include="AzureMobileServicesFactory.cs" />
     <Compile Include="AzurePlatformCommon.cs" />
     <Compile Include="IAzureMobileServices.cs" />
     <Compile Include="MobileServiceRequestHelper.cs" />

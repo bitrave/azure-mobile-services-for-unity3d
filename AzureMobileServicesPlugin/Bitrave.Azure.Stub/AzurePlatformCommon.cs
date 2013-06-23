@@ -6,23 +6,8 @@ using System.Text;
 
 namespace Bitrave.Azure
 {
-    /// <summary>
-    /// Why does this factory exist?  To get access to the azure mobile services, and to 
-    /// get around dependency pain in Unity.  The factory uses reflection to remove the dependencies
-    /// on some Azure libraries that cause Unity builds to fail for Windows Phone.
-    /// </summary>
-    public class AzureMobileServicesFactory
-    {
-        public static IAzureMobileServices Create(string url, string token)
-        {
-            var assembly = System.Reflection.Assembly.Load(new AssemblyName("Bitrave.Azure"));
-            Type t = assembly.GetType("AzureMobileServices");
-            var azure = (IAzureMobileServices)Activator.CreateInstance(t);
-
-            azure.Initialise(url, token);
-            return azure;
-        }
-    }
+    
+    
 
     // THese are copied from their Azure counterparts to give the same structure
 
