@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 
 Project("{12AE5AD2-B4F2-3425-DFE2-5FDF1FB426DE}") = "AzureMobileServicesUnityProject", "Assembly-CSharp-vs.csproj", "{CA597E38-2A10-F23E-3C22-E8804120B814}"
 EndProject
+Project("{12AE5AD2-B4F2-3425-DFE2-5FDF1FB426DE}") = "AzureMobileServicesUnityProject", "Assembly-CSharp-Editor-vs.csproj", "{B71880F1-A6B2-A096-9AB2-4D70BD0DC25B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,11 +15,15 @@ Global
 		{CA597E38-2A10-F23E-3C22-E8804120B814}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CA597E38-2A10-F23E-3C22-E8804120B814}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CA597E38-2A10-F23E-3C22-E8804120B814}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B71880F1-A6B2-A096-9AB2-4D70BD0DC25B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B71880F1-A6B2-A096-9AB2-4D70BD0DC25B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B71880F1-A6B2-A096-9AB2-4D70BD0DC25B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B71880F1-A6B2-A096-9AB2-4D70BD0DC25B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-												GlobalSection(MonoDevelopProperties) = preSolution
+																									GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Assembly-CSharp.csproj
 		Policies = $0
 		$0.TextStylePolicy = $1
