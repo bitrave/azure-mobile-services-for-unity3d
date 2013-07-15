@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Bitrave.Azure
 {
-    class AzureMobileServices : IAzureMobileServices
+    public class AzureMobileServices : IAzureMobileServices
     {
         public bool Initialised()
         {
