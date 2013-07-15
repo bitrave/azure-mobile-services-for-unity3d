@@ -46,13 +46,12 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Services.Client" />
     <Reference Include="UnityEngine">
-      <HintPath>..\..\..\..\Program Files (x86)\Unity\Editor\Data\PlaybackEngines\MetroSupport\Tools\UnityEngine.dll</HintPath>
+      <HintPath>..\lib\UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AzureMobileServices.cs" />
-    <Compile Include="AzureMobileServicesFactory.cs" />
     <Compile Include="AzurePlatformCommon.cs" />
     <Compile Include="IAzureMobileServices.cs" />
     <Compile Include="MobileServiceRequestHelper.cs" />

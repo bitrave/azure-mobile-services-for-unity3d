@@ -85,9 +85,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\Bitrave.Azure.Editor\AzureMobileServicesFactory.cs">
-      <Link>AzureMobileServicesFactory.cs</Link>
-    </Compile>
     <Compile Include="..\Bitrave.Azure.Editor\AzurePlatformCommon.cs">
       <Link>AzurePlatformCommon.cs</Link>
     </Compile>

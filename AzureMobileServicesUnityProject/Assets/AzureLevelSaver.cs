@@ -179,7 +179,7 @@ public class AzureLevelSaver : MonoBehaviour
 
     private Vector3 screenPoint;
     private Vector3 offset;
-    private string _azureEndPoint = "http://bitraveservices.azure-mobile.net/";
-    private string _applicationKey = "ePYhutMVmiUPWhFAJaRYTJsPFTiuAB20";
+    private string _azureEndPoint = "http://<YOUR SERVICES HERE>.azure-mobile.net/";
+    private string _applicationKey = "<YOUR KEY HERE>";
 
 }
