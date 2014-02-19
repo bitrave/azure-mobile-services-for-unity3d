@@ -1,4 +1,4 @@
-1. This project relies on JsonDotNet for Unity, you can get it on the Unity asset store.  It costs $20.  It's worth it, just get it.  JSON libraries for each platform are different to having a ubiquitous library that works on all platforms.  
+1. This project relies on JsonDotNet for Unity, you can get it on the Unity asset store.  It costs $20.  It's worth it, just get it.  JSON libraries for each platform are different to having a ubiquitous library that works on all platforms.  You can try and work with each version of the newtonsoft Json.dot.net libraries, but it's just so easy working with 1, with source.  Up to you.
 
 2. Drag the AzureUI onto a camera, it tends to not attach from source control.  Hit run.
 
