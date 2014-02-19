@@ -5,15 +5,16 @@ A suite of Azure Mobile Services plugins for Unity3D, cross platform with common
 
 The goal is simple.  "Just hit build".  That means 1 API, no platform dependent code.  The plugin should hide platform intracacies, not surface them.
 
-Runs across:
-- UnityEditor - Lightweight support in Unity so you don't need to build to test your app.  No more stubbing data locally.
-- Windows 8 Store - Uses the underlying native DLL for consistent and robust integration
-- Windows Phone 8 - Uses the underlying native DLL for consistent and robust integration
+We have replaced the old versions (AzureMobileServicesPlugin/AzureMobileServicesUnityProject) with a single version AzureMobileServicesUniversal.  This version runs on everything, has asynchronous calls for everything, and while a little more verbose, gives you a lot more power, such as authentication.
 
-Coming soon:
+Runs across:
+- UnityEditor 
+- Windows 8 Store 
+- Windows Phone 8 
 - iOS
 - Android
-
-Head to http://www.bitrave.com/azure-mobile-services-for-unity-3d/ for more information.
+- Probably everything else Unity runs on
 
 If you want to discuss or get in contact, feel free to hit up Vaughan on twitter @vaughanknight.
+
+
