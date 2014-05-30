@@ -89,21 +89,10 @@ using System.Linq.Expressions;
 using Linq2Rest.Provider;
 
 using System.Reflection;
+using Bitrave.Azure.Auth;
 
 namespace Bitrave.Azure
 {
-    public class AuthenticationToken
-    {
-    }
-    public class FacebookGoogleAuthenticationToken : AuthenticationToken
-    {
-        public string access_token;
-    }
-    public class MicrosoftAuthenticationToken : AuthenticationToken
-    {
-        public string authenticationToken;
-    }
-
     internal class MobileServiceRequestHelper<T> where T : class
     {
         private RestClient _client;
@@ -165,7 +154,8 @@ namespace Bitrave.Azure
 
         private static AuthenticationToken CreateToken(AuthenticationProvider provider, string token)
         {
-            AuthenticationToken authToken = new AuthenticationToken();
+            AuthenticationToken authToken = null;
+
             switch (provider)
             {
                 case AuthenticationProvider.Facebook:
@@ -181,6 +171,7 @@ namespace Bitrave.Azure
                         break;
                     }
             }
+
             return authToken;
         }
 
