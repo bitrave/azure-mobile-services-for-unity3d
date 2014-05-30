@@ -84,7 +84,7 @@ using System.Linq.Expressions;
 
 namespace Bitrave.Azure
 {
-    
+
     public interface IAzureMobileServices
     {
         bool Initialised();
@@ -93,7 +93,7 @@ namespace Bitrave.Azure
         void Update<T>(T item, Action<AzureResponse<T>> callback = null) where T : class;
         void LoginAsync(AuthenticationProvider provider, string Token, Action<AzureResponse<MobileServiceUser>> callback);
         void Delete<T>(T item, Action<AzureResponse<object>> callback = null) where T : class;
-        
+
         /// <summary>
         /// Returns a filtered list.  NOTE: The predicate runs client side in
         /// the Unity Editor version, so you may not get expected behaviours (yet) in the Editor.  
@@ -102,5 +102,9 @@ namespace Bitrave.Azure
 
         void Lookup<T>(int id, Action<AzureResponse<T>> callback) where T : class;
         void Read<T>(Action<AzureResponse<List<T>>> callback) where T : class;
+
+        void Post<T, U>(T item, string endpoint, Action<AzureResponse<U>> callback = null)
+            where T : class
+            where U : class;
     }
 }

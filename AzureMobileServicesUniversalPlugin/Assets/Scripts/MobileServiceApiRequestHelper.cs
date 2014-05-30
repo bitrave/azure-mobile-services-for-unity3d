@@ -77,155 +77,65 @@
 // all export and re-export control laws and regulations.
 #endregion
 
-
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.IO.Compression;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Net;
 using System.Text;
 using Newtonsoft.Json;
 using RestSharp;
 using UnityEngine;
+using System.Linq.Expressions;
 using Linq2Rest.Provider;
 
+using System.Reflection;
+using Bitrave.Azure.Auth;
 
 namespace Bitrave.Azure
 {
-    public class AzureMobileServices : IAzureMobileServices
+    internal class MobileServiceApiRequestHelper<T, U> : MobileServiceBaseRequestHelper
+        where T : class
+        where U : class
     {
-        private string _azureEndPoint;
-        private string _applicationKey;
-        public MobileServiceUser User;
+        private string _apiEndpoint;
 
-        private bool _LoggingEnabled = false;
-        public bool LoggingEnabled { get { return _LoggingEnabled; } set { _LoggingEnabled = value; } }
-
-        public Action<AzureResponse<object>> OnError;
-
-        public AzureMobileServices(string url, string token)
+        public MobileServiceApiRequestHelper(string azureEndPoint, string token, MobileServiceUser User, string apiEndpoint)
+            : base(azureEndPoint, token, User)
         {
-            _azureEndPoint = url;
-            _applicationKey = token;
+            _azureEndPoint = azureEndPoint + "api/";
+            _apiEndpoint = apiEndpoint;
+
+            this.CreateClient();
         }
 
-        public bool Initialised()
+        public Dictionary<RestRequestAsyncHandle, Action<AzureResponse<U>>> _PostCallbacks = new Dictionary<RestRequestAsyncHandle,Action<AzureResponse<U>>>();
+        public Dictionary<RestRequestAsyncHandle, T> _PostItems = new Dictionary<RestRequestAsyncHandle, T>();
+ 
+        public void PostAsync(T requestData, Action<AzureResponse<U>> callback)
         {
-            return _azureEndPoint != null && _applicationKey != null;
+            var json = SerializeObject(requestData);
+            var request = (IRestRequest)(new RestRequest(_apiEndpoint, Method.POST));
+            request.RequestFormat = DataFormat.Json;
+            request.AddHeader("Content-Type", "application/json");
+            request.AddParameter("application/json", json, ParameterType.RequestBody);
+            var postHandle = _client.ExecuteAsync<U>(request, PostAsyncHandler);
+            
+            _PostCallbacks.Add(postHandle, callback);
+            _PostItems.Add(postHandle, requestData);
         }
 
-        public void Log(string s)
+        private void PostAsyncHandler(IRestResponse<U> restResponse, RestRequestAsyncHandle handle)
         {
-            if (LoggingEnabled)
-            {
-                Debug.Log(s);
-            }
-        }
+            CheckError(restResponse);
+            var postResponse = DeserialiseObject<U>(restResponse);
+            
+            var originalItem = _PostItems[handle];
+            _PostItems.Remove(handle);
 
-        /// <summary>
-        /// Inserts a new item
-        /// </summary>
-        public void Insert<T>(T item, Action<AzureResponse<T>> callback = null) where T : class
-        {
-            Log("Inserting:" + item);
-            var ms = CreateTableHelper<T>();
-            MobileServiceTableRequestHelper<T>.SetItemId(item, null);
-            ms.PostAsync(item, callback);
-            Log("Insert request sent.");
-        }
+            var callback = _PostCallbacks[handle];
+            _PostCallbacks.Remove(handle);
 
-        /// <summary>
-        /// Updates a specific item
-        /// </summary>
-        public void Update<T>(T item, Action<AzureResponse<T>> callback = null) where T : class
-        {
-            Log("Updating:" + item);
-            var ms = CreateTableHelper<T>();
-            var id = MobileServiceTableRequestHelper<T>.GetItemId<T>(item);
-            MobileServiceTableRequestHelper<T>.SetItemId<T>(item, null);
-            ms.PutAsync(item, id, callback);
-            Log("Update request sent.");
-            MobileServiceTableRequestHelper<T>.SetItemId<T>(item, id);
-        }
-
-        /// <summary>
-        /// Logs into using the tokens provided by the auth provider (such as Facebook)
-        /// </summary>
-        public void LoginAsync(AuthenticationProvider provider, string token, Action<AzureResponse<MobileServiceUser>> callback)
-        {
-            Log("Logging in.");
-            var ms = CreateTableHelper<object>();
-            ms.LoginAsync(provider, token, callback);
-            Log("Log in request sent.");
-        }
-
-        /// <summary>
-        /// Deletes a specific item.  
-        /// </summary>
-        public void Delete<T>(T item, Action<AzureResponse<object>> callback = null) where T : class
-        {
-            Log("Deleting: " + item);
-            var type = typeof(T);
-            var id = MobileServiceTableRequestHelper<T>.GetItemId<T>(item);
-
-            var ms = CreateTableHelper<T>();
-
-            ms.DeleteAsync(id, callback);
-            Log("Delete request sent.");
-        }
-
-        /// <summary>
-        /// Returns a filtered list.  
-        /// </summary>
-        public void Where<T>(Expression<Func<T, bool>> predicate, Action<AzureResponse<List<T>>> callback) where T : class
-        {
-            Log("Sending query.");
-            var ms = CreateTableHelper<T>();
-            ms.QueryAsync(predicate, callback);
-            Log("Query request sent.");
-        }
-
-        public void Lookup<T>(int id, Action<AzureResponse<T>> callback) where T : class
-        {
-            Log("Looking up item:" + id);
-            var ms = CreateTableHelper<T>();
-            ms.GetAsync(id, callback);
-            Log("Look up request sent.");
-        }
-
-        public void Read<T>(Action<AzureResponse<List<T>>> callback) where T : class
-        {
-            Log("Reading items.");
-            var ms = CreateTableHelper<T>();
-            ms.GetAsync(callback);
-            Log("Read request sent.");
-        }
-
-
-        public void Post<T, U>(T item, string endpoint, Action<AzureResponse<U>> callback = null)
-            where T : class
-            where U : class
-        {
-            Log("POSTing:" + item);
-            var ms = CreateApiHelper<T, U>(endpoint);
-            ms.PostAsync(item, callback);
-            Log("POST request sent.");
-        }
-
-        private MobileServiceTableRequestHelper<T> CreateTableHelper<T>() where T : class
-        {
-            var ms = new MobileServiceTableRequestHelper<T>(_azureEndPoint, _applicationKey, User);
-            return ms;
-        }
-
-        private MobileServiceApiRequestHelper<T, U> CreateApiHelper<T, U>(string endpoint)
-            where T : class
-            where U : class
-        {
-            var ms = new MobileServiceApiRequestHelper<T, U>(_azureEndPoint, _applicationKey, User, endpoint);
-            return ms;
+            if (callback != null) callback(postResponse);
         }
     }
 }
