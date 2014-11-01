@@ -217,20 +217,20 @@ namespace Bitrave.Azure
             if (callback != null) callback(postResponse);
         }
 
-        public static int GetItemId<T>(T item) where T : class
-        {
-            var type = typeof(T);
-            var prop = MobileServiceRequestHelper<T>.GetIdProperty();
-            var id = (int)prop.GetValue(item, null);
-            return id;
-        }
-
-        public static void SetItemId<T>(T item, int? id) where T : class
-        {
-            var type = typeof(T);
-            var prop = MobileServiceRequestHelper<T>.GetIdProperty();
-            prop.SetValue(item, id, null);
-        }
+		public static String GetItemId<T>(T item) where T : class
+		{
+			var type = typeof(T);
+			var prop = MobileServiceRequestHelper<T>.GetIdProperty();
+			var id = (String)prop.GetValue(item, null);
+			return id;
+		}
+		
+		public static void SetItemId<T>(T item, String id) where T : class
+		{
+			var type = typeof(T);
+			var prop = MobileServiceRequestHelper<T>.GetIdProperty();
+			prop.SetValue(item, id, null);
+		}
 
 #if UNITY_METRO && !UNITY_EDITOR
         public static PropertyInfo GetIdProperty()
@@ -258,19 +258,19 @@ namespace Bitrave.Azure
 
         public Dictionary<RestRequestAsyncHandle, Action<AzureResponse<T>>> _PutCallbacks = new Dictionary<RestRequestAsyncHandle, Action<AzureResponse<T>>>();
 
-        public void PutAsync(T requestData, int id, Action<AzureResponse<T>> callback)
-        {
-            var json = SerializeObject(requestData);
-            var request = new RestRequest(_tableName + "/" + id, Method.PATCH);
-            request.RequestFormat = DataFormat.Json;
-            request.AddHeader("Content-Type", "application/json");
-            request.AddParameter("application/json", json, ParameterType.RequestBody);
-
-            var handle = _client.ExecuteAsync(request, PutAsyncHandler);
-            
-            // Store the handle
-            _PutCallbacks.Add(handle, callback);
-        }
+		public void PutAsync(T requestData, String id, Action<AzureResponse<T>> callback)
+		{
+			var json = SerializeObject(requestData);
+			var request = new RestRequest(_tableName + "/" + id, Method.PATCH);
+			request.RequestFormat = DataFormat.Json;
+			request.AddHeader("Content-Type", "application/json");
+			request.AddParameter("application/json", json, ParameterType.RequestBody);
+			
+			var handle = _client.ExecuteAsync(request, PutAsyncHandler);
+			
+			// Store the handle
+			_PutCallbacks.Add(handle, callback);
+		}
 
         public void PutAsyncHandler(IRestResponse response, RestRequestAsyncHandle handle) 
         {
@@ -297,18 +297,18 @@ namespace Bitrave.Azure
 
         private Dictionary<RestRequestAsyncHandle, Action<AzureResponse<object>>> _DeleteCallbacks = new Dictionary<RestRequestAsyncHandle, Action<AzureResponse<object>>>();
 
-        public RestRequestAsyncHandle DeleteAsync(int id, Action<AzureResponse<object>> callback)
-        {
-            var request = new RestRequest(_tableName + "/" + id, Method.DELETE);
-            request.AddHeader("Content-Type", "application/json");
-            if (callback == null)
-            {
-                callback = DefaultHandler;
-            }
-            var handle = _client.ExecuteAsync<object>(request, DeleteAsyncHandler);
-            _DeleteCallbacks.Add(handle, callback);
-            return handle;
-        }
+		public RestRequestAsyncHandle DeleteAsync(String id, Action<AzureResponse<object>> callback)
+		{
+			var request = new RestRequest(_tableName + "/" + id, Method.DELETE);
+			request.AddHeader("Content-Type", "application/json");
+			if (callback == null)
+			{
+				callback = DefaultHandler;
+			}
+			var handle = _client.ExecuteAsync<object>(request, DeleteAsyncHandler);
+			_DeleteCallbacks.Add(handle, callback);
+			return handle;
+		}
 
         public void DefaultHandler(AzureResponse<object> response) { return; }
 
@@ -338,6 +338,7 @@ namespace Bitrave.Azure
             callback(response);
         }
 
+		/*
         public RestRequestAsyncHandle GetAsync(int id, Action<AzureResponse<T>> callback)
         {
             var request = new RestRequest(_tableName + "/" + id, Method.GET);
@@ -345,6 +346,15 @@ namespace Bitrave.Azure
             _ItemCallbacks.Add(handle, callback);
             return handle;
         }
+        */
+
+		public RestRequestAsyncHandle GetAsync(String id, Action<AzureResponse<T>> callback)
+		{
+			var request = new RestRequest(_tableName + "/" + id, Method.GET);
+			var handle = _client.ExecuteAsync<T>(request, GetIdAsyncHandler);
+			_ItemCallbacks.Add(handle, callback);
+			return handle;
+		}
 
         public void GetIdAsyncHandler(IRestResponse<T> restResponse, RestRequestAsyncHandle handle)
         {

@@ -187,13 +187,13 @@ namespace Bitrave.Azure
             Log("Query request sent.");
         }
 
-        public void Lookup<T>(int id, Action<AzureResponse<T>> callback) where T : class
-        {
-            Log("Looking up item:" + id);
-            var ms = CreateHelper<T>();
-            ms.GetAsync(id, callback);
-            Log("Look up request sent.");
-        }
+		public void Lookup<T>(String id, Action<AzureResponse<T>> callback) where T : class
+		{
+			Log("Looking up item:" + id);
+			var ms = CreateHelper<T>();
+			ms.GetAsync(id, callback);
+			Log("Look up request sent.");
+		}
 
         private MobileServiceRequestHelper<T> CreateHelper<T>() where T : class
         {
