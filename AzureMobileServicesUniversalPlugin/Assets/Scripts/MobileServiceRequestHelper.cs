@@ -217,15 +217,15 @@ namespace Bitrave.Azure
             if (callback != null) callback(postResponse);
         }
 
-		public static String GetItemId<T>(T item) where T : class
+		public static Guid GetItemId<T>(T item) where T : class
 		{
 			var type = typeof(T);
 			var prop = MobileServiceRequestHelper<T>.GetIdProperty();
-			var id = (String)prop.GetValue(item, null);
+			var id = (Guid)prop.GetValue(item, null);
 			return id;
 		}
 		
-		public static void SetItemId<T>(T item, String id) where T : class
+		public static void SetItemId<T>(T item, Guid? id) where T : class
 		{
 			var type = typeof(T);
 			var prop = MobileServiceRequestHelper<T>.GetIdProperty();
@@ -258,7 +258,7 @@ namespace Bitrave.Azure
 
         public Dictionary<RestRequestAsyncHandle, Action<AzureResponse<T>>> _PutCallbacks = new Dictionary<RestRequestAsyncHandle, Action<AzureResponse<T>>>();
 
-		public void PutAsync(T requestData, String id, Action<AzureResponse<T>> callback)
+		public void PutAsync(T requestData, Guid id, Action<AzureResponse<T>> callback)
 		{
 			var json = SerializeObject(requestData);
 			var request = new RestRequest(_tableName + "/" + id, Method.PATCH);
@@ -297,7 +297,7 @@ namespace Bitrave.Azure
 
         private Dictionary<RestRequestAsyncHandle, Action<AzureResponse<object>>> _DeleteCallbacks = new Dictionary<RestRequestAsyncHandle, Action<AzureResponse<object>>>();
 
-		public RestRequestAsyncHandle DeleteAsync(String id, Action<AzureResponse<object>> callback)
+		public RestRequestAsyncHandle DeleteAsync(Guid id, Action<AzureResponse<object>> callback)
 		{
 			var request = new RestRequest(_tableName + "/" + id, Method.DELETE);
 			request.AddHeader("Content-Type", "application/json");
@@ -338,17 +338,7 @@ namespace Bitrave.Azure
             callback(response);
         }
 
-		/*
-        public RestRequestAsyncHandle GetAsync(int id, Action<AzureResponse<T>> callback)
-        {
-            var request = new RestRequest(_tableName + "/" + id, Method.GET);
-            var handle = _client.ExecuteAsync<T>(request, GetIdAsyncHandler);
-            _ItemCallbacks.Add(handle, callback);
-            return handle;
-        }
-        */
-
-		public RestRequestAsyncHandle GetAsync(String id, Action<AzureResponse<T>> callback)
+		public RestRequestAsyncHandle GetAsync(Guid id, Action<AzureResponse<T>> callback)
 		{
 			var request = new RestRequest(_tableName + "/" + id, Method.GET);
 			var handle = _client.ExecuteAsync<T>(request, GetIdAsyncHandler);

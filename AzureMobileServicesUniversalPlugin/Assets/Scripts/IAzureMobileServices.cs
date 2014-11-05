@@ -100,7 +100,7 @@ namespace Bitrave.Azure
         /// </summary>
         void Where<T>(Expression<Func<T, bool>> predicate, Action<AzureResponse<List<T>>> callback) where T : class;
 
-		void Lookup<T>(String id, Action<AzureResponse<T>> callback) where T : class;
+		void Lookup<T>(Guid id, Action<AzureResponse<T>> callback) where T : class;
         void Read<T>(Action<AzureResponse<List<T>>> callback) where T : class;
     }
 }

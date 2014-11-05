@@ -187,7 +187,7 @@ namespace Bitrave.Azure
             Log("Query request sent.");
         }
 
-		public void Lookup<T>(String id, Action<AzureResponse<T>> callback) where T : class
+		public void Lookup<T>(Guid id, Action<AzureResponse<T>> callback) where T : class
 		{
 			Log("Looking up item:" + id);
 			var ms = CreateHelper<T>();

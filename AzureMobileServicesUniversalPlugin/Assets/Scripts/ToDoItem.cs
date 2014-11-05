@@ -88,7 +88,7 @@ using System;
 
 public class ToDoItem
 {
-	public String Id { get; set; }
+	public Guid? Id { get; set; }
 
     [JsonProperty(PropertyName = "text")]
     public string Text { get; set; }
