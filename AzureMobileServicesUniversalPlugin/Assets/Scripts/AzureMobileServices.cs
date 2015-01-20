@@ -130,8 +130,8 @@ namespace Bitrave.Azure
         public void Insert<T>(T item, Action<AzureResponse<T>> callback = null) where T : class
         {
             Log("Inserting:" + item);
-            var ms = CreateHelper<T>();
-            MobileServiceRequestHelper<T>.SetItemId(item, null);
+            var ms = CreateHelper<T, object>();
+            MobileServiceRequestHelper<T, object>.SetItemId(item, null);
             ms.PostAsync(item, callback);
             Log("Insert request sent.");
         }
@@ -142,12 +142,12 @@ namespace Bitrave.Azure
         public void Update<T>(T item, Action<AzureResponse<T>> callback = null) where T : class
         {
             Log("Updating:" + item);
-            var ms = CreateHelper<T>();
-            var id = MobileServiceRequestHelper<T>.GetItemId<T>(item);
-            MobileServiceRequestHelper<T>.SetItemId<T>(item, null);
+            var ms = CreateHelper<T, object>();
+            var id = MobileServiceRequestHelper<T, object>.GetItemId<T>(item);
+            MobileServiceRequestHelper<T, object>.SetItemId<T>(item, null);
             ms.PutAsync(item, id, callback);
             Log("Update request sent.");
-            MobileServiceRequestHelper<T>.SetItemId<T>(item, id);
+            MobileServiceRequestHelper<T, object>.SetItemId<T>(item, id);
         }
 
         /// <summary>
@@ -156,7 +156,7 @@ namespace Bitrave.Azure
         public void LoginAsync(AuthenticationProvider provider, string token, Action<AzureResponse<MobileServiceUser>> callback)
         {
             Log("Logging in.");
-            var ms = CreateHelper<object>();
+            var ms = CreateHelper<object, object>();
             ms.LoginAsync(provider, token, callback);
             Log("Log in request sent.");
         }
@@ -167,10 +167,10 @@ namespace Bitrave.Azure
         public void Delete<T>(T item, Action<AzureResponse<object>> callback = null) where T : class
         {
             Log("Deleting: " + item);
-            var type = typeof(T);
-            var id = MobileServiceRequestHelper<T>.GetItemId<T>(item);
+            //var type = typeof(T);
+            var id = MobileServiceRequestHelper<T, object>.GetItemId<T>(item);
 
-            var ms = CreateHelper<T>();
+            var ms = CreateHelper<T, object>();
 
             ms.DeleteAsync(id, callback);
             Log("Delete request sent.");
@@ -182,35 +182,40 @@ namespace Bitrave.Azure
         public void Where<T>(Expression<Func<T, bool>> predicate, Action<AzureResponse<List<T>>> callback) where T : class
         {
             Log("Sending query.");
-            var ms = CreateHelper<T>();
+            var ms = CreateHelper<T, object>();
             ms.QueryAsync(predicate, callback);
             Log("Query request sent.");
         }
 
-		public void Lookup<T>(Guid id, Action<AzureResponse<T>> callback) where T : class
-		{
-			Log("Looking up item:" + id);
-			var ms = CreateHelper<T>();
-			ms.GetAsync(id, callback);
-			Log("Look up request sent.");
-		}
-
-        private MobileServiceRequestHelper<T> CreateHelper<T>() where T : class
+        public void Lookup<T>(Guid id, Action<AzureResponse<T>> callback) where T : class
         {
-            var ms = new MobileServiceRequestHelper<T>(_azureEndPoint, _applicationKey, User);
+            Log("Looking up item:" + id);
+            var ms = CreateHelper<T, object>();
+            ms.GetAsync(id, callback);
+            Log("Look up request sent.");
+        }
+
+        private MobileServiceRequestHelper<T1, TResult> CreateHelper<T1, TResult>() where T1 : class
+        {
+            var ms = new MobileServiceRequestHelper<T1, TResult>(_azureEndPoint, _applicationKey, User);
             return ms;
         }
 
         public void Read<T>(Action<AzureResponse<List<T>>> callback) where T : class
         {
             Log("Reading items.");
-            var ms = CreateHelper<T>();
+            var ms = CreateHelper<T, object>();
             ms.GetAsync(callback);
             Log("Read request sent.");
         }
 
-
-       
+        public void InvokeApiAsync<TArg, TResult>(string customApiName, TArg item, Action<AzureResponse<TResult>> callback = null) where TArg : class
+        {
+            Log(string.Format("Invoking: {0} with {1}", customApiName, item));
+            var ms = CreateHelper<TArg, TResult>();
+            ms.InvokeApiAsync(customApiName, item, callback);
+            Log("Invoke request sent.");
+        }
     }
 
 
